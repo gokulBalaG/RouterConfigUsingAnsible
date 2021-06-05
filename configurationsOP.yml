@@ -1,6 +1,6 @@
 ---
 
-- name: Network Getting Started First Playbook
+- name: Gather information
   connection: network_cli
   gather_facts: false
   hosts: all
@@ -13,15 +13,8 @@
     - name: Gather info
       ios_command:
         commands:
-        #- show version
         - show interfaces
-        #- sh ip route
-      register: output
-      
-   # - name: Display info
-    #  debug: var=output.stdout
-      
-    
+      register: output    
 
     - name: Display the config
       debug:

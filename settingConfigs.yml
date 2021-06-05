@@ -6,14 +6,17 @@
   hosts: all
   tasks:
 
+#task to gather all the information of the router
     - name: Get config for ios devices
       ios_facts:
         gather_subset: all
 
+#display the specified informations
     - name: Display the config
       debug:
         msg: "The hostname is {{ ansible_net_hostname }} , the OS is {{ ansible_net_version }} and the network interfaces are  {{ ansible_net_interfaces }}"
-        
+
+#confuring a logging host to the router
     - name: configure logging host
       ios_config:
         lines: logging host 192.168.1.125
@@ -24,20 +27,23 @@
         var: output
 
 
+#Assigning an IP to interface GigabitEthernet3
     - name: configure interface G3 settings
       ios_config:
         lines:
         - description test interface1
         - ip address 172.31.1.1 255.255.255.0
         parents: interface GigabitEthernet3
-        
+
+#Assigning an IP to interface GigabitEthernet2
     - name: configure interface G2 settings
       ios_config:
         lines:
         - description test interface2
         - ip address 192.168.1.1 255.255.255.0
         parents: interface GigabitEthernet2
-        
+
+#Turning the interfaces up
     - name: make interface2 up
       ios_interface:
         name: GigabitEthernet2
@@ -49,9 +55,7 @@
         name: GigabitEthernet3
         enabled: true
         
-    
-
-        
+#Static routing       
     - name: configure static route
       net_static_route:
         prefix: 192.168.2.0
