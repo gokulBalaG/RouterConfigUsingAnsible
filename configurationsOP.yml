@@ -1,0 +1,33 @@
+---
+
+- name: Network Getting Started First Playbook
+  connection: network_cli
+  gather_facts: false
+  hosts: all
+  tasks:
+
+    - name: Get config for ios devices
+      ios_facts:
+        gather_subset: all
+        
+    - name: Gather info
+      ios_command:
+        commands:
+        #- show version
+        - show interfaces
+        #- sh ip route
+      register: output
+      
+   # - name: Display info
+    #  debug: var=output.stdout
+      
+    
+
+    - name: Display the config
+      debug:
+        msg: "The hostname is {{ ansible_net_hostname }}  the OS is {{ ansible_net_version }}  and the network interfaces are  {{ ansible_net_interfaces }}"
+        
+ 
+     
+    
+

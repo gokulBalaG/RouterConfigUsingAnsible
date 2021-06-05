@@ -1,0 +1,65 @@
+---
+
+- name: Network Playbook Extended
+  connection: network_cli
+  gather_facts: false
+  hosts: all
+  tasks:
+
+    - name: Get config for ios devices
+      ios_facts:
+        gather_subset: all
+
+    - name: Display the config
+      debug:
+        msg: "The hostname is {{ ansible_net_hostname }} , the OS is {{ ansible_net_version }} and the network interfaces are  {{ ansible_net_interfaces }}"
+        
+    - name: configure logging host
+      ios_config:
+        lines: logging host 192.168.1.125
+      register: output
+
+    - name: print output
+      debug:
+        var: output
+
+
+    - name: configure interface G3 settings
+      ios_config:
+        lines:
+        - description test interface1
+        - ip address 172.31.1.1 255.255.255.0
+        parents: interface GigabitEthernet3
+        
+    - name: configure interface G2 settings
+      ios_config:
+        lines:
+        - description test interface2
+        - ip address 192.168.1.1 255.255.255.0
+        parents: interface GigabitEthernet2
+        
+    - name: make interface2 up
+      ios_interface:
+        name: GigabitEthernet2
+        enabled: true
+        
+            
+    - name: interface3 up
+      ios_interface:
+        name: GigabitEthernet3
+        enabled: true
+        
+    
+
+        
+    - name: configure static route
+      net_static_route:
+        prefix: 192.168.2.0
+        mask: 255.255.255.0
+        next_hop: 192.168.1.3
+
+    - name: Save running-config
+      ios_config:
+        save_when: modified 
+
+   
