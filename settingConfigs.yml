@@ -6,7 +6,7 @@
   hosts: all
   tasks:
 
-#task set a banner
+#task to set a banner
      - name: configure the login banner
       ios_banner:
         banner: login
@@ -16,7 +16,7 @@
           |---------------------------------------|   
         state: present
         
-#task set a message of the day
+#task to set a message of the day
     - name: configure the motd banner
       ios_banner:
         banner: motd
