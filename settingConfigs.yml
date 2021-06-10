@@ -6,6 +6,26 @@
   hosts: all
   tasks:
 
+#task set a banner
+     - name: configure the login banner
+      ios_banner:
+        banner: login
+        text: |
+          |---------------------------------------|
+          |       This is a test banner           |    
+          |---------------------------------------|   
+        state: present
+        
+#task set a message of the day
+    - name: configure the motd banner
+      ios_banner:
+        banner: motd
+        text: |
+          |---------------------------------------|
+          |       This is a test motd             |    
+          |---------------------------------------| 
+        state: present
+
 #task to gather all the information of the router
     - name: Get config for ios devices
       ios_facts:
